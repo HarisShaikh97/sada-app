@@ -86,7 +86,8 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		justifyContent: "space-between",
 		paddingHorizontal: 25,
-		paddingVertical: 50
+		marginBottom: 50,
+		marginTop: 25
 	},
 	welcomeTextContainer: {
 		flexDirection: "column",
