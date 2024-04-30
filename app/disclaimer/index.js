@@ -15,18 +15,20 @@ export default function Page() {
 	})
 	return (
 		<View style={styles.container}>
-			<ImageBackground
-				source={require("../../assets/images/bg-image2.png")}
-				style={styles.bgImage}
-				resizeMode="cover"
-			>
-				<View style={styles.logoContainer}>
-					<Image
-						source={require("../../assets/icons/logo-purple.png")}
-						style={styles.logo}
-					/>
-				</View>
-			</ImageBackground>
+			<View style={styles.bgImageContainer}>
+				<ImageBackground
+					source={require("../../assets/images/bg-image2.png")}
+					style={styles.bgImage}
+					resizeMode="cover"
+				>
+					<View style={styles.logoContainer}>
+						<Image
+							source={require("../../assets/icons/logo-purple.png")}
+							style={styles.logo}
+						/>
+					</View>
+				</ImageBackground>
+			</View>
 			<View style={styles.disclaimerContainer}>
 				<Text style={styles.disclaimerHeading}>Disclaimer:</Text>
 				<Text style={styles.disclaimerText}>
@@ -58,17 +60,21 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		alignItems: "center"
 	},
+	bgImageContainer: {
+		height: "30%",
+		width: "100%"
+	},
 	bgImage: {
-		height: 225,
+		height: "100%",
 		width: "100%",
-		alignItems: "center"
+		alignItems: "center",
+		justifyContent: "center"
 	},
 	logoContainer: {
 		height: 85,
 		width: 85,
 		borderRadius: 45,
 		backgroundColor: "white",
-		marginTop: 85,
 		alignItems: "center",
 		justifyContent: "center"
 	},
@@ -80,20 +86,20 @@ const styles = StyleSheet.create({
 		flex: 1,
 		width: "100%",
 		paddingHorizontal: 15,
-		paddingTop: 35,
+		paddingTop: 15,
 		flexDirection: "column"
 	},
 	disclaimerHeading: {
-		fontSize: 25,
+		fontSize: 22.5,
 		fontWeight: "600"
 	},
 	instructionsHeading: {
-		marginTop: 50,
-		fontSize: 25,
+		marginTop: 25,
+		fontSize: 22.5,
 		fontWeight: "600"
 	},
 	disclaimerText: {
-		fontSize: 20,
+		fontSize: 17.5,
 		marginTop: 15
 	},
 	startButton: {
@@ -106,7 +112,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 		gap: 10,
-		marginBottom: 50
+		marginBottom: 35
 	},
 	startButtonText: {
 		color: "white",

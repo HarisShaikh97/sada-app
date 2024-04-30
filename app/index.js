@@ -16,30 +16,30 @@ export default function Page() {
 	})
 	return (
 		<View style={styles.container}>
-			<ImageBackground
-				source={require("../assets/images/bg-image.png")}
-				style={styles.bgImage}
-				resizeMode="cover"
-			>
-				<View style={styles.logoContainer}>
-					<Image
-						source={require("../assets/icons/logo-purple.png")}
-						style={styles.logo}
-						alt="logo"
-					/>
-				</View>
-			</ImageBackground>
+			<View style={styles.bgImageContainer}>
+				<ImageBackground
+					source={require("../assets/images/bg-image.png")}
+					style={styles.bgImage}
+					resizeMode="cover"
+				>
+					<View style={styles.logoContainer}>
+						<Image
+							source={require("../assets/icons/logo-purple.png")}
+							style={styles.logo}
+							alt="logo"
+						/>
+					</View>
+				</ImageBackground>
+			</View>
 			<View style={styles.welcomeContainer}>
-				<View style={styles.welcomeTextContainer}>
-					{fontsLoaded && (
-						<Text style={styles.welcomeTitle}>Welcome to Sada</Text>
-					)}
-					{fontsLoaded && (
-						<Text style={styles.welcomeText}>
-							For living Happier and Healthier, everyday.
-						</Text>
-					)}
-				</View>
+				{fontsLoaded && (
+					<Text style={styles.welcomeTitle}>Welcome to Sada</Text>
+				)}
+				{fontsLoaded && (
+					<Text style={styles.welcomeText}>
+						For living Happier and Healthier, everyday.
+					</Text>
+				)}
 				<TouchableOpacity
 					style={styles.startButton}
 					onPress={() => {
@@ -62,17 +62,21 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		alignItems: "center"
 	},
+	bgImageContainer: {
+		height: "55%",
+		width: "100%"
+	},
 	bgImage: {
-		height: 500,
+		height: "100%",
 		width: "100%",
-		alignItems: "center"
+		alignItems: "center",
+		justifyContent: "center"
 	},
 	logoContainer: {
 		height: 175,
 		width: 175,
 		borderRadius: 100,
 		backgroundColor: "white",
-		marginTop: 165,
 		alignItems: "center",
 		justifyContent: "center"
 	},
@@ -86,12 +90,8 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		justifyContent: "space-between",
 		paddingHorizontal: 25,
-		marginBottom: 50,
-		marginTop: 25
-	},
-	welcomeTextContainer: {
-		flexDirection: "column",
-		gap: 15
+		marginBottom: 35,
+		marginTop: 15
 	},
 	welcomeTitle: {
 		fontSize: 50,
