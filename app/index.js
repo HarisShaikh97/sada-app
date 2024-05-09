@@ -2,13 +2,13 @@ import {
 	TouchableOpacity,
 	View,
 	ImageBackground,
-	Image,
 	Text,
 	StyleSheet
 } from "react-native"
 import { router } from "expo-router"
 import { useFonts } from "expo-font"
 import { Octicons } from "@expo/vector-icons"
+import LogoCircle from "../components/logo-circle/LogoCircle"
 
 export default function Page() {
 	const [fontsLoaded] = useFonts({
@@ -22,13 +22,11 @@ export default function Page() {
 					style={styles.bgImage}
 					resizeMode="cover"
 				>
-					<View style={styles.logoContainer}>
-						<Image
-							source={require("../assets/icons/logo-purple.png")}
-							style={styles.logo}
-							alt="logo"
-						/>
-					</View>
+					<LogoCircle
+						size={175}
+						color="purple"
+						backgroundColor="white"
+					/>
 				</ImageBackground>
 			</View>
 			<View style={styles.welcomeContainer}>
@@ -43,7 +41,7 @@ export default function Page() {
 				<TouchableOpacity
 					style={styles.startButton}
 					onPress={() => {
-						router.navigate("/disclaimer")
+						router.navigate("/nickname")
 					}}
 				>
 					{fontsLoaded && (
@@ -71,18 +69,6 @@ const styles = StyleSheet.create({
 		width: "100%",
 		alignItems: "center",
 		justifyContent: "center"
-	},
-	logoContainer: {
-		height: 175,
-		width: 175,
-		borderRadius: 100,
-		backgroundColor: "white",
-		alignItems: "center",
-		justifyContent: "center"
-	},
-	logo: {
-		height: "100%",
-		width: "100%"
 	},
 	welcomeContainer: {
 		width: "100%",
