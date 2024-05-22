@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
 		alignItems: "center"
 	},
 	optionContainer: {
-		height: 75,
+		height: 65,
 		width: "100%",
 		borderRadius: 15,
 		backgroundColor: "#E7DCFF",

@@ -1,63 +1,73 @@
-import {
-	View,
-	SafeAreaView,
-	Image,
-	TouchableOpacity,
-	StyleSheet
-} from "react-native"
+import { View, Image, TouchableOpacity, StyleSheet } from "react-native"
+import { usePathname } from "expo-router"
 
 export default function BottomNav() {
+	const pathName = usePathname()
+
 	return (
 		<View style={styles.bottomNav}>
-			<SafeAreaView style={styles.navListContainer}>
-				<TouchableOpacity>
-					<Image
-						source={require("../../assets/icons/home.png")}
-						alt="icon"
-						style={styles.navIcon}
-						resizeMode="contain"
-					/>
-				</TouchableOpacity>
-				<TouchableOpacity>
-					<Image
-						source={require("../../assets/icons/video.png")}
-						alt="icon"
-						style={styles.navIcon}
-						resizeMode="contain"
-					/>
-				</TouchableOpacity>
-				<TouchableOpacity>
-					<Image
-						source={require("../../assets/icons/chat.png")}
-						alt="icon"
-						style={styles.navIcon}
-						resizeMode="contain"
-					/>
-				</TouchableOpacity>
-				<TouchableOpacity>
-					<Image
-						source={require("../../assets/icons/therapist.png")}
-						alt="icon"
-						style={styles.navIcon}
-						resizeMode="contain"
-					/>
-				</TouchableOpacity>
-				<TouchableOpacity>
-					<Image
-						source={require("../../assets/icons/profile.png")}
-						alt="icon"
-						style={styles.navIcon}
-						resizeMode="contain"
-					/>
-				</TouchableOpacity>
-			</SafeAreaView>
+			<TouchableOpacity style={styles.navItem}>
+				<Image
+					source={require("../../assets/icons/home.png")}
+					alt="icon"
+					style={styles.navIcon}
+					resizeMode="contain"
+				/>
+				{pathName === "/home" && (
+					<View style={styles.activeTabMarker} />
+				)}
+			</TouchableOpacity>
+			<TouchableOpacity style={styles.navItem}>
+				<Image
+					source={require("../../assets/icons/video.png")}
+					alt="icon"
+					style={styles.navIcon}
+					resizeMode="contain"
+				/>
+				{pathName === "/video" && (
+					<View style={styles.activeTabMarker} />
+				)}
+			</TouchableOpacity>
+			<TouchableOpacity style={styles.navItem}>
+				<Image
+					source={require("../../assets/icons/chat.png")}
+					alt="icon"
+					style={styles.navIcon}
+					resizeMode="contain"
+				/>
+				{pathName === "/chat" && (
+					<View style={styles.activeTabMarker} />
+				)}
+			</TouchableOpacity>
+			<TouchableOpacity style={styles.navItem}>
+				<Image
+					source={require("../../assets/icons/therapist.png")}
+					alt="icon"
+					style={styles.navIcon}
+					resizeMode="contain"
+				/>
+				{pathName === "/therapist" && (
+					<View style={styles.activeTabMarker} />
+				)}
+			</TouchableOpacity>
+			<TouchableOpacity style={styles.navItem}>
+				<Image
+					source={require("../../assets/icons/profile.png")}
+					alt="icon"
+					style={styles.navIcon}
+					resizeMode="contain"
+				/>
+				{pathName === "/profile" && (
+					<View style={styles.activeTabMarker} />
+				)}
+			</TouchableOpacity>
 		</View>
 	)
 }
 
 const styles = StyleSheet.create({
 	bottomNav: {
-		height: 100,
+		height: 85,
 		width: "100%",
 		borderTopLeftRadius: 20,
 		borderTopRightRadius: 20,
@@ -66,17 +76,24 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.25,
 		shadowRadius: 3,
 		backgroundColor: "white",
-		alignItems: "center",
-		paddingTop: 20
-	},
-	navListContainer: {
 		flexDirection: "row",
-		alignItems: "center",
+		alignItems: "start",
 		justifyContent: "space-evenly",
-		width: "100%"
+		paddingTop: 20
 	},
 	navIcon: {
 		height: 20,
 		width: 20
+	},
+	navItem: {
+		flexDirection: "column",
+		alignItems: "center",
+		gap: 5
+	},
+	activeTabMarker: {
+		height: 7.5,
+		width: 7.5,
+		borderRadius: 5,
+		backgroundColor: "#BA90FF"
 	}
 })
