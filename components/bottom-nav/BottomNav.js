@@ -55,7 +55,14 @@ export default function BottomNav() {
 					<View style={styles.activeTabMarker} />
 				)}
 			</TouchableOpacity>
-			<TouchableOpacity style={styles.navItem}>
+			<TouchableOpacity
+				style={styles.navItem}
+				onPress={() => {
+					if (pathName !== "/therapist") {
+						router.navigate("/therapist")
+					}
+				}}
+			>
 				<Image
 					source={require("../../assets/icons/therapist.png")}
 					alt="icon"

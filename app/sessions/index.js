@@ -1,11 +1,4 @@
-import {
-	View,
-	ScrollView,
-	TouchableOpacity,
-	Text,
-	Image,
-	StyleSheet
-} from "react-native"
+import { View, ScrollView, StyleSheet } from "react-native"
 import BottomNav from "../../components/bottom-nav/BottomNav"
 import UpcomingSessionCard from "../../components/upcoming-session-card/UpcomingSessionCard"
 import SessionsListHeader from "../../components/sessions-list-header/SessionsListHeader"
