@@ -1,12 +1,21 @@
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native"
-import { usePathname } from "expo-router"
+import { usePathname, useRouter } from "expo-router"
 
 export default function BottomNav() {
 	const pathName = usePathname()
 
+	const router = useRouter()
+
 	return (
 		<View style={styles.bottomNav}>
-			<TouchableOpacity style={styles.navItem}>
+			<TouchableOpacity
+				style={styles.navItem}
+				onPress={() => {
+					if (pathName !== "/home") {
+						router.navigate("/home")
+					}
+				}}
+			>
 				<Image
 					source={require("../../assets/icons/home.png")}
 					alt="icon"
@@ -17,14 +26,21 @@ export default function BottomNav() {
 					<View style={styles.activeTabMarker} />
 				)}
 			</TouchableOpacity>
-			<TouchableOpacity style={styles.navItem}>
+			<TouchableOpacity
+				style={styles.navItem}
+				onPress={() => {
+					if (pathName !== "/sessions") {
+						router.navigate("/sessions")
+					}
+				}}
+			>
 				<Image
-					source={require("../../assets/icons/video.png")}
+					source={require("../../assets/icons/sessions.png")}
 					alt="icon"
 					style={styles.navIcon}
 					resizeMode="contain"
 				/>
-				{pathName === "/video" && (
+				{pathName === "/sessions" && (
 					<View style={styles.activeTabMarker} />
 				)}
 			</TouchableOpacity>
