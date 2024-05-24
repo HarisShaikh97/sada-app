@@ -1,17 +1,11 @@
 import { useState } from "react"
-import {
-	View,
-	ScrollView,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	StyleSheet
-} from "react-native"
+import { View, ScrollView, Text, StyleSheet } from "react-native"
 import { useRouter } from "expo-router"
 import { useFonts } from "expo-font"
-import { FontAwesome } from "@expo/vector-icons"
 import LogoCircle from "../../components/logo-circle/LogoCircle"
 import NextButton from "../../components/next-button/NextButton"
+import FeelingCard from "../../components/feeling-card/FeelingCard"
+import FeelingInput from "../../components/feeling-input/FeelingInput"
 
 export default function Page() {
 	const [fontsLoaded] = useFonts({
@@ -57,79 +51,18 @@ export default function Page() {
 						<View style={styles.optionsScrollContainer}>
 							{options?.map((item, key) => {
 								return (
-									<TouchableOpacity
-										style={[
-											styles.optionContainer,
-											{
-												justifyContent:
-													selectedOptions?.includes(
-														item
-													)
-														? "space-between"
-														: "center",
-												borderWidth:
-													selectedOptions?.includes(
-														item
-													)
-														? 2
-														: 0,
-												flexDirection: "row",
-												alignItems: "center"
-											}
-										]}
-										onPress={() => {
-											if (
-												selectedOptions?.includes(item)
-											) {
-												setSelectedOptions(
-													selectedOptions?.filter(
-														(selectedOption) => {
-															return (
-																selectedOption !==
-																item
-															)
-														}
-													)
-												)
-											} else {
-												setSelectedOptions([
-													...selectedOptions,
-													item
-												])
-											}
-										}}
+									<FeelingCard
+										selectedOptions={selectedOptions}
+										setSelectedOptions={setSelectedOptions}
+										feeling={item}
 										key={key}
-									>
-										{selectedOptions?.includes(item) && (
-											<View
-												style={styles.emptyContainer}
-											/>
-										)}
-										{fontsLoaded && (
-											<Text style={styles.optionText}>
-												{item}
-											</Text>
-										)}
-										{selectedOptions?.includes(item) && (
-											<FontAwesome
-												name="check"
-												size={25}
-												color="black"
-											/>
-										)}
-									</TouchableOpacity>
+									/>
 								)
 							})}
 							{fontsLoaded && (
-								<TextInput
-									style={[
-										styles.optionContainer,
-										styles.optionText,
-										styles.optionTextInput
-									]}
-									placeholder="enter your own |"
-									value={optionInput}
-									onChangeText={setOptionInput}
+								<FeelingInput
+									optionInput={optionInput}
+									setOptionInput={setOptionInput}
 								/>
 							)}
 						</View>
@@ -171,9 +104,6 @@ const styles = StyleSheet.create({
 		color: "white",
 		fontFamily: "Raleway-Black"
 	},
-	emptyContainer: {
-		width: 25
-	},
 	scrollArea: {
 		width: "100%",
 		flex: 1
@@ -183,20 +113,5 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		gap: 15,
 		alignItems: "center"
-	},
-	optionContainer: {
-		height: 65,
-		width: "100%",
-		borderRadius: 15,
-		backgroundColor: "#E7DCFF",
-		paddingHorizontal: 25
-	},
-	optionText: {
-		fontSize: 25,
-		fontWeight: "600",
-		fontFamily: "Raleway-Black"
-	},
-	optionTextInput: {
-		textAlign: "center"
 	}
 })
