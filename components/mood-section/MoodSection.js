@@ -1,9 +1,12 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native"
+import { useRouter } from "expo-router"
 import PropTypes from "prop-types"
 import MessagePill from "../message-pill/MessagePill"
 import MoodInput from "../mood-input/MoodInput"
 
 export default function MoodSection({ currentMood, setCurrentMood }) {
+	const router = useRouter()
+
 	return (
 		<View style={styles.sectionContainer}>
 			<Text style={styles.greetingsText}>How are you feeling today?</Text>
@@ -11,7 +14,11 @@ export default function MoodSection({ currentMood, setCurrentMood }) {
 				<View style={styles.messageSectionContainer}>
 					<MessagePill currentMood={currentMood} />
 					{currentMood === "sad" && (
-						<TouchableOpacity>
+						<TouchableOpacity
+							onPress={() => {
+								router.navigate("/therapist")
+							}}
+						>
 							<Text style={styles.therapistButtonText}>
 								Or talk to your therapist {">"}
 							</Text>

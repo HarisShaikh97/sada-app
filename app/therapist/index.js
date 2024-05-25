@@ -6,16 +6,24 @@ import {
 	ScrollView,
 	StyleSheet
 } from "react-native"
+import { useState } from "react"
 import { useFonts } from "expo-font"
 import BottomNav from "../../components/bottom-nav/BottomNav"
+import TherapistEmergencyPopup from "../../components/therapist-emergency-popup/TherapistEmergencyPopup"
 
 export default function Page() {
 	const [fontsLoaded] = useFonts({
 		"Raleway-Black": require("../../assets/fonts/raleway-5/Raleway-Regular.ttf")
 	})
 
+	const [showPopup, setShowPopup] = useState(false)
+
 	return (
 		<View style={styles.container}>
+			<TherapistEmergencyPopup
+				showPopup={showPopup}
+				setShowPopup={setShowPopup}
+			/>
 			<ScrollView style={styles.bodyScrollView}>
 				<View style={styles.bodyScrollContainer}>
 					{fontsLoaded && (
@@ -58,6 +66,9 @@ export default function Page() {
 								styles.buttonContainer,
 								styles.emergencyButton
 							]}
+							onPress={() => {
+								setShowPopup(true)
+							}}
 						>
 							<Text style={styles.buttonText}>Emergency</Text>
 						</TouchableOpacity>

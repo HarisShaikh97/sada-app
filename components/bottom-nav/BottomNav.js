@@ -73,7 +73,14 @@ export default function BottomNav() {
 					<View style={styles.activeTabMarker} />
 				)}
 			</TouchableOpacity>
-			<TouchableOpacity style={styles.navItem}>
+			<TouchableOpacity
+				style={styles.navItem}
+				onPress={() => {
+					if (pathName !== "/profile") {
+						router.navigate("/profile")
+					}
+				}}
+			>
 				<Image
 					source={require("../../assets/icons/profile.png")}
 					alt="icon"
