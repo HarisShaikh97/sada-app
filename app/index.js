@@ -41,7 +41,7 @@ export default function Page() {
 				<TouchableOpacity
 					style={styles.startButton}
 					onPress={() => {
-						router.navigate("/nickname")
+						router.navigate("/login")
 					}}
 				>
 					{fontsLoaded && (

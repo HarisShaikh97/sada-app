@@ -44,7 +44,14 @@ export default function BottomNav() {
 					<View style={styles.activeTabMarker} />
 				)}
 			</TouchableOpacity>
-			<TouchableOpacity style={styles.navItem}>
+			<TouchableOpacity
+				style={styles.navItem}
+				onPress={() => {
+					if (pathName !== "/chat") {
+						router.navigate("/chat")
+					}
+				}}
+			>
 				<Image
 					source={require("../../assets/icons/chat.png")}
 					alt="icon"

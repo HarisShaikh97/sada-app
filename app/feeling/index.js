@@ -36,7 +36,11 @@ export default function Page() {
 				<View style={styles.quizWrapper}>
 					<View style={styles.titleWrapper}>
 						{fontsLoaded && (
-							<Text style={styles.titleText}>
+							<Text
+								style={styles.titleText}
+								numberOfLines={2}
+								ellipsizeMode="tail"
+							>
 								{selectedOptions?.length > 0 ||
 								optionInput?.length > 0
 									? "Choose the options that apply to you"

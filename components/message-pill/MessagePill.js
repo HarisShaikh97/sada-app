@@ -1,8 +1,11 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native"
+import { useRouter } from "expo-router"
 import AntDesign from "@expo/vector-icons/AntDesign"
 import PropTypes from "prop-types"
 
 export default function MessagePill({ currentMood }) {
+	const router = useRouter()
+
 	return (
 		<View
 			style={[
@@ -42,6 +45,9 @@ export default function MessagePill({ currentMood }) {
 						? styles.neutralMessageButton
 						: styles.sadMessageButton
 				]}
+				onPress={() => {
+					router?.navigate("/chat")
+				}}
 			>
 				<AntDesign name="arrowright" size={25} color="white" />
 			</TouchableOpacity>
