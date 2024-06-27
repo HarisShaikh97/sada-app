@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import {
 	View,
 	Text,
@@ -8,6 +8,7 @@ import {
 } from "react-native"
 import { useRouter } from "expo-router"
 import { useFonts } from "expo-font"
+import { AppContext } from "../../context/context"
 import LogoCircle from "../../components/logo-circle/LogoCircle"
 
 export default function Page() {
@@ -15,11 +16,26 @@ export default function Page() {
 		"Raleway-Black": require("../../assets/fonts/raleway-5/Raleway-Regular.ttf")
 	})
 
+	const { dispatch } = useContext(AppContext)
+
 	const router = useRouter()
 
 	const [fullName, setFullName] = useState("")
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
+
+	const handleNext = () => {
+		const payload = {
+			fullName: fullName,
+			email: email,
+			password: password
+		}
+		dispatch({
+			type: "SET_SIGNUP_USER",
+			payload: payload
+		})
+		router?.navigate("/nickname")
+	}
 
 	return (
 		<View style={styles.container}>
@@ -51,12 +67,7 @@ export default function Page() {
 					secureTextEntry
 				/>
 			)}
-			<TouchableOpacity
-				style={styles.signupButton}
-				onPress={() => {
-					router?.navigate("/nickname")
-				}}
-			>
+			<TouchableOpacity style={styles.signupButton} onPress={handleNext}>
 				{fontsLoaded && (
 					<Text style={styles.signupButtonText}>Signup</Text>
 				)}

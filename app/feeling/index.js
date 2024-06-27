@@ -1,7 +1,8 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { View, ScrollView, Text, StyleSheet } from "react-native"
 import { useRouter } from "expo-router"
 import { useFonts } from "expo-font"
+import { AppContext } from "../../context/context"
 import LogoCircle from "../../components/logo-circle/LogoCircle"
 import NextButton from "../../components/next-button/NextButton"
 import FeelingCard from "../../components/feeling-card/FeelingCard"
@@ -11,6 +12,8 @@ export default function Page() {
 	const [fontsLoaded] = useFonts({
 		"Raleway-Black": require("../../assets/fonts/raleway-5/Raleway-Regular.ttf")
 	})
+
+	const { state } = useContext(AppContext)
 
 	const router = useRouter()
 
@@ -24,6 +27,8 @@ export default function Page() {
 			router?.navigate("/home")
 		}
 	}
+
+	console.log(state)
 
 	return (
 		<View style={styles.container}>

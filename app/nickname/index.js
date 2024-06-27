@@ -1,21 +1,58 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { View, Text, TextInput, StyleSheet } from "react-native"
 import { useRouter } from "expo-router"
 import { useFonts } from "expo-font"
+import axios from "axios"
+import Toast from "react-native-root-toast"
+import { AppContext } from "../../context/context"
 import LogoCircle from "../../components/logo-circle/LogoCircle"
 import NextButton from "../../components/next-button/NextButton"
 
 export default function Page() {
+	const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL
+
 	const [fontsLoaded] = useFonts({
 		"Raleway-Black": require("../../assets/fonts/raleway-5/Raleway-Regular.ttf")
 	})
 
 	const router = useRouter()
 
+	const { state, dispatch } = useContext(AppContext)
+
 	const [nickname, setNickname] = useState("")
 
-	const handleNext = () => {
-		router.navigate("/feeling")
+	const handleNext = async () => {
+		const payload = {
+			fullName: state?.signupUser?.fullName,
+			nickName: nickname,
+			email: state?.signupUser?.email,
+			password: state?.signupUser?.password
+		}
+
+		await axios
+			.post(`${API_BASE_URL}/api/register`, payload)
+			?.then((res) => {
+				console.log(res)
+				Toast.show("Signup successful!", {
+					duration: 1500
+				})
+				dispatch({
+					type: "SET_SIGNUP_USER",
+					payload: null
+				})
+				router?.navigate("/login")
+			})
+			?.catch((err) => {
+				console.log(err)
+				Toast.show(err?.response?.data?.error || "Error!", {
+					duration: 1500
+				})
+				dispatch({
+					type: "SET_SIGNUP_USER",
+					payload: null
+				})
+				router.navigate("/signup")
+			})
 	}
 
 	return (
