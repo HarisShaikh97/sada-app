@@ -2,6 +2,8 @@ import { useState, useContext } from "react"
 import { View, ScrollView, Text, StyleSheet } from "react-native"
 import { useRouter } from "expo-router"
 import { useFonts } from "expo-font"
+import axios from "axios"
+import Toast from "react-native-root-toast"
 import { AppContext } from "../../context/context"
 import LogoCircle from "../../components/logo-circle/LogoCircle"
 import NextButton from "../../components/next-button/NextButton"
@@ -9,6 +11,8 @@ import FeelingCard from "../../components/feeling-card/FeelingCard"
 import FeelingInput from "../../components/feeling-input/FeelingInput"
 
 export default function Page() {
+	const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL
+
 	const [fontsLoaded] = useFonts({
 		"Raleway-Black": require("../../assets/fonts/raleway-5/Raleway-Regular.ttf")
 	})
@@ -22,13 +26,53 @@ export default function Page() {
 	const [selectedOptions, setSelectedOptions] = useState([])
 	const [optionInput, setOptionInput] = useState("")
 
-	const handleNext = () => {
-		if (selectedOptions?.length > 0 || optionInput?.length > 0) {
-			router?.navigate("/home")
+	const handleNext = async () => {
+		if (optionInput?.length > 0) {
+			const payload = {
+				feeling: [...selectedOptions, optionInput]
+			}
+			await axios
+				.put(
+					`${API_BASE_URL}/api/user?accessToken=${state?.accessToken}`,
+					payload
+				)
+				?.then((res) => {
+					console.log(res)
+					Toast.show(res?.data?.Message, {
+						duration: 1500
+					})
+					router?.navigate("/home")
+				})
+				?.catch((err) => {
+					console.log(err)
+					Toast.show("Error!", {
+						duration: 1500
+					})
+				})
+		} else if (selectedOptions?.length > 0) {
+			const payload = {
+				feeling: selectedOptions
+			}
+			await axios
+				.put(
+					`${API_BASE_URL}/api/user?accessToken=${state?.accessToken}`,
+					payload
+				)
+				?.then((res) => {
+					console.log(res)
+					Toast.show(res?.data?.Message, {
+						duration: 1500
+					})
+					router?.navigate("/home")
+				})
+				?.catch((err) => {
+					console.log(err)
+					Toast.show("Error!", {
+						duration: 1500
+					})
+				})
 		}
 	}
-
-	console.log(state)
 
 	return (
 		<View style={styles.container}>

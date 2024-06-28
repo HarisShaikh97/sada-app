@@ -1,6 +1,8 @@
 import { View, ScrollView, Text, StyleSheet } from "react-native"
-import { useState } from "react"
+import { useState, useEffect, useContext } from "react"
 import { useFonts } from "expo-font"
+import axios from "axios"
+import { AppContext } from "../../context/context"
 import BottomNav from "../../components/bottom-nav/BottomNav"
 import FeelingButton from "../../components/feeling-button/FeelingButton"
 import MoodSection from "../../components/mood-section/MoodSection"
@@ -9,7 +11,13 @@ import UpcomingEventsSection from "../../components/upcoming-events-section/Upco
 import ArticlesSection from "../../components/articles-section/ArticlesSection"
 
 export default function Page() {
+	const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL
+
+	const { state } = useContext(AppContext)
+
 	const [currentMood, setCurrentMood] = useState(null)
+	const [articles, setArticles] = useState([])
+	const [user, setUser] = useState()
 
 	const [fontsLoaded] = useFonts({
 		"Raleway-Black": require("../../assets/fonts/raleway-5/Raleway-Regular.ttf")
@@ -33,32 +41,39 @@ export default function Page() {
 		}
 	]
 
-	const articles = [
-		{
-			title: "Dealing with stage fright.",
-			description: "An honest guide to boost your confidence."
-		},
-		{
-			title: "COVID-19 and its impact.",
-			description: "The pandemic opened the new opportunities!"
-		},
-		{
-			title: "Best Breathing Exercises",
-			description: "Dr. Shahzina K."
-		},
-		{
-			title: "Practicing Mindfulness",
-			description: "By Ali H."
-		}
-	]
-
+	useEffect(() => {
+		;(async () => {
+			await axios
+				.get(`${API_BASE_URL}/api/article`)
+				?.then((res) => {
+					console.log(res)
+					setArticles(res?.data?.articles)
+				})
+				?.catch((err) => {
+					console.log(err)
+				})
+			await axios
+				.get(
+					`${API_BASE_URL}/api/user?accessToken=${state?.accessToken}`
+				)
+				?.then((res) => {
+					console.log(res)
+					setUser(res?.data?.data)
+				})
+				?.catch((err) => {
+					console.log(err)
+				})
+		})()
+	}, [])
 	return (
 		<View style={styles.container}>
 			<ScrollView style={styles.bodyScrollView}>
 				<View style={styles.bodyScrollContainer}>
 					<FeelingButton />
 					{fontsLoaded && (
-						<Text style={styles.greetingsText}>Afternoon, Ali</Text>
+						<Text style={styles.greetingsText}>
+							Afternoon, {user?.nickName}
+						</Text>
 					)}
 					<MoodSection
 						currentMood={currentMood}
