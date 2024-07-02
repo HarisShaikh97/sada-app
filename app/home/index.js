@@ -17,29 +17,12 @@ export default function Page() {
 
 	const [currentMood, setCurrentMood] = useState(null)
 	const [articles, setArticles] = useState([])
+	const [meetings, setMeetings] = useState([])
 	const [user, setUser] = useState()
 
 	const [fontsLoaded] = useFonts({
 		"Raleway-Black": require("../../assets/fonts/raleway-5/Raleway-Regular.ttf")
 	})
-
-	const events = [
-		{
-			date: "28 March, 2021",
-			title: "Therapy Session",
-			description: "Dr. Ahmad S."
-		},
-		{
-			date: "31 March, 2021",
-			title: "LUMS: Health & Hygiene Seminar",
-			description: "Webinar"
-		},
-		{
-			date: "31 March, 2021",
-			title: "CBT & Benefits",
-			description: "Webinar"
-		}
-	]
 
 	useEffect(() => {
 		;(async () => {
@@ -63,6 +46,17 @@ export default function Page() {
 				?.catch((err) => {
 					console.log(err)
 				})
+			await axios
+				.get(
+					`${API_BASE_URL}/api/meeting?accessToken=${state?.accessToken}`
+				)
+				?.then((res) => {
+					console.log(res)
+					setMeetings(res?.data?.meetings)
+				})
+				?.catch((err) => {
+					console.log(err)
+				})
 		})()
 	}, [])
 
@@ -81,7 +75,7 @@ export default function Page() {
 						setCurrentMood={setCurrentMood}
 					/>
 					<QuoteSection />
-					<UpcomingEventsSection events={events} />
+					<UpcomingEventsSection events={meetings} />
 					<ArticlesSection articles={articles} />
 				</View>
 			</ScrollView>

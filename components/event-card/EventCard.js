@@ -13,7 +13,7 @@ export default function EventCard({ event, currentColor }) {
 		>
 			<Text style={styles.eventDate}>{event?.date}</Text>
 			<Text style={styles.eventTitle} numberOfLines={1}>
-				{event?.title}
+				{event?.therapist?.fullName}
 			</Text>
 			<Text
 				style={[
@@ -24,7 +24,7 @@ export default function EventCard({ event, currentColor }) {
 				]}
 				numberOfLines={1}
 			>
-				{event?.description}
+				{event?.notes}
 			</Text>
 		</TouchableOpacity>
 	)
