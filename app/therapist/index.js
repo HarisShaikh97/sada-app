@@ -1,3 +1,4 @@
+import { useState, useEffect, useContext } from "react"
 import {
 	View,
 	Text,
@@ -6,17 +7,51 @@ import {
 	ScrollView,
 	StyleSheet
 } from "react-native"
-import { useState } from "react"
 import { useFonts } from "expo-font"
+import axios from "axios"
+import { AppContext } from "../../context/context"
 import BottomNav from "../../components/bottom-nav/BottomNav"
 import TherapistEmergencyPopup from "../../components/therapist-emergency-popup/TherapistEmergencyPopup"
 
 export default function Page() {
+	const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL
+
+	const { state } = useContext(AppContext)
+
 	const [fontsLoaded] = useFonts({
 		"Raleway-Black": require("../../assets/fonts/raleway-5/Raleway-Regular.ttf")
 	})
 
 	const [showPopup, setShowPopup] = useState(false)
+	const [therapist, setTherapist] = useState()
+	const [meetings, setMeetings] = useState([])
+
+	useEffect(() => {
+		;(async () => {
+			await axios
+				.get(
+					`${API_BASE_URL}/api/therapist?accessToken=${state?.accessToken}`
+				)
+				?.then((res) => {
+					console.log(res)
+					setTherapist(res?.data?.therapists[0])
+				})
+				?.catch((err) => {
+					console.log(err)
+				})
+			await axios
+				.get(
+					`${API_BASE_URL}/api/meeting?accessToken=${state?.accessToken}`
+				)
+				?.then((res) => {
+					console.log(res)
+					setMeetings(res?.data?.meetings)
+				})
+				?.catch((err) => {
+					console.log(err)
+				})
+		})()
+	}, [])
 
 	return (
 		<View style={styles.container}>
@@ -38,7 +73,7 @@ export default function Page() {
 								style={styles.therapistName}
 								numberOfLines={2}
 							>
-								Dr. Ahmad Shahzad
+								{therapist?.fullName}
 							</Text>
 						</View>
 						<Image
@@ -52,7 +87,9 @@ export default function Page() {
 						<Text style={styles.sectionTitleText}>
 							Your next therapy session
 						</Text>
-						<Text style={styles.textLarge}>28th March, 2021</Text>
+						<Text style={styles.textLarge}>
+							{meetings[0]?.date}
+						</Text>
 					</View>
 					<View style={styles.frequencyContainer}>
 						<Text style={styles.sectionTitleText}>Frequency</Text>

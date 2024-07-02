@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect, useContext } from "react"
 import {
 	View,
 	ScrollView,
@@ -8,16 +8,39 @@ import {
 	StyleSheet
 } from "react-native"
 import { useFonts } from "expo-font"
+import axios from "axios"
 import AntDesign from "@expo/vector-icons/AntDesign"
+import { AppContext } from "../../context/context"
 import BottomNav from "../../components/bottom-nav/BottomNav"
 import DeleteAccountPopup from "../../components/delete-account-popup/DeleteAccountPopup"
 
 export default function Page() {
+	const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL
+
+	const { state } = useContext(AppContext)
+
 	const [fontsLoaded] = useFonts({
 		"Raleway-Black": require("../../assets/fonts/raleway-5/Raleway-Regular.ttf")
 	})
 
 	const [showPopup, setShowPopup] = useState(false)
+	const [user, setUser] = useState()
+
+	useEffect(() => {
+		;(async () => {
+			await axios
+				.get(
+					`${API_BASE_URL}/api/user?accessToken=${state?.accessToken}`
+				)
+				?.then((res) => {
+					console.log(res)
+					setUser(res?.data?.data)
+				})
+				?.catch((err) => {
+					console.log(err)
+				})
+		})()
+	}, [])
 
 	return (
 		<View style={styles.container}>
@@ -41,7 +64,9 @@ export default function Page() {
 							<Text style={styles.profileHeadingText}>
 								Nickname
 							</Text>
-							<Text style={styles.userNameText}>Ali</Text>
+							<Text style={styles.userNameText}>
+								{user?.nickName}
+							</Text>
 						</View>
 					</View>
 					<View style={styles.myJournalContainer}>

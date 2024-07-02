@@ -1,14 +1,16 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native"
 import AntDesign from "@expo/vector-icons/AntDesign"
+import PropTypes from "prop-types"
 
-export default function UpcomingSessionCard() {
+export default function UpcomingSessionCard({ session }) {
 	return (
 		<View style={styles.upcomingSessionCard}>
 			<Text style={styles.upcomingSessionHeading}>Upcoming Session</Text>
 			<Text style={styles.upcomingSessionTitle}>
-				Sahana V, Msc in Clinical Psychology
+				{session?.therapist?.fullName},{" "}
+				{session?.therapist?.specialization}
 			</Text>
-			<Text style={styles.upcomingSessionTime}>7:30 PM - 8:30 PM</Text>
+			<Text style={styles.upcomingSessionTime}>{session?.time}</Text>
 			<TouchableOpacity style={styles.joinNowButton}>
 				<Text style={styles.joinNowButtonText}>Join Now</Text>
 				<AntDesign name="play" size={12.5} color="black" />
@@ -63,3 +65,7 @@ const styles = StyleSheet.create({
 		width: "100%"
 	}
 })
+
+UpcomingSessionCard.propTypes = {
+	session: PropTypes.object
+}

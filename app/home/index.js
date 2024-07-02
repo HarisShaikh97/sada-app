@@ -65,6 +65,7 @@ export default function Page() {
 				})
 		})()
 	}, [])
+
 	return (
 		<View style={styles.container}>
 			<ScrollView style={styles.bodyScrollView}>

@@ -1,6 +1,7 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native"
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native"
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons"
 import Octicons from "@expo/vector-icons/Octicons"
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6"
 import PropTypes from "prop-types"
 
 export default function SessionCard({ session }) {
@@ -8,18 +9,14 @@ export default function SessionCard({ session }) {
 		<View style={styles.sessionCard}>
 			<View style={styles.therapistProfileContainer}>
 				<View style={styles.profileImageContainer}>
-					<Image
-						source={session?.image}
-						alt="profile"
-						style={styles.profileImage}
-					/>
+					<FontAwesome6 name="user-doctor" size={20} color="black" />
 				</View>
 				<View style={styles.therapistDetailsContainer}>
 					<Text style={styles.therapistName}>
-						{session?.therapistName}
+						{session?.therapist?.fullName}
 					</Text>
 					<Text style={styles.therapistDescription}>
-						{session?.therapistDescription}
+						{session?.therapist?.specialization}
 					</Text>
 				</View>
 			</View>
@@ -77,11 +74,9 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		borderWidth: 1,
 		borderColor: "gray",
-		overflow: "hidden"
-	},
-	profileImage: {
-		height: "100%",
-		width: "100%"
+		overflow: "hidden",
+		alignItems: "center",
+		justifyContent: "center"
 	},
 	therapistDetailsContainer: {
 		flexDirection: "column",

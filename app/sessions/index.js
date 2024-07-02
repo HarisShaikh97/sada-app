@@ -1,56 +1,43 @@
+import { useEffect, useState, useContext } from "react"
 import { View, ScrollView, StyleSheet } from "react-native"
+import axios from "axios"
+import { AppContext } from "../../context/context"
 import BottomNav from "../../components/bottom-nav/BottomNav"
 import UpcomingSessionCard from "../../components/upcoming-session-card/UpcomingSessionCard"
 import SessionsListHeader from "../../components/sessions-list-header/SessionsListHeader"
 import SessionCard from "../../components/session-card/SessionCard"
 
 export default function Page() {
-	const sessions = [
-		{
-			therapistName: "Sahana V",
-			therapistDescription: "Msc in Clinical Psychology",
-			image: require("../../assets/images/profile.png"),
-			date: "31st March '22",
-			time: "7:30 PM - 8:30 PM"
-		},
-		{
-			therapistName: "Sahana V",
-			therapistDescription: "Msc in Clinical Psychology",
-			image: require("../../assets/images/profile.png"),
-			date: "31st March '22",
-			time: "7:30 PM - 8:30 PM"
-		},
-		{
-			therapistName: "Sahana V",
-			therapistDescription: "Msc in Clinical Psychology",
-			image: require("../../assets/images/profile.png"),
-			date: "31st March '22",
-			time: "7:30 PM - 8:30 PM"
-		},
-		{
-			therapistName: "Sahana V",
-			therapistDescription: "Msc in Clinical Psychology",
-			image: require("../../assets/images/profile.png"),
-			date: "31st March '22",
-			time: "7:30 PM - 8:30 PM"
-		},
-		{
-			therapistName: "Sahana V",
-			therapistDescription: "Msc in Clinical Psychology",
-			image: require("../../assets/images/profile.png"),
-			date: "31st March '22",
-			time: "7:30 PM - 8:30 PM"
-		}
-	]
+	const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL
+
+	const { state } = useContext(AppContext)
+
+	const [meetings, setMeetings] = useState([])
+
+	useEffect(() => {
+		;(async () => {
+			await axios
+				.get(
+					`${API_BASE_URL}/api/meeting?accessToken=${state?.accessToken}`
+				)
+				?.then((res) => {
+					console.log(res)
+					setMeetings(res?.data?.meetings)
+				})
+				?.catch((err) => {
+					console.log(err)
+				})
+		})()
+	}, [])
 
 	return (
 		<View style={styles.container}>
 			<ScrollView style={styles.bodyScrollView}>
 				<View style={styles.bodyScrollContainer}>
-					<UpcomingSessionCard />
+					<UpcomingSessionCard session={meetings[0]} />
 					<SessionsListHeader />
 					<View style={styles.sessionsListContainer}>
-						{sessions?.map((item, key) => {
+						{meetings?.map((item, key) => {
 							return <SessionCard session={item} key={key} />
 						})}
 					</View>
