@@ -76,7 +76,7 @@ export default function Page() {
 				<Text style={styles.loginText}>Already have an account?</Text>
 				<TouchableOpacity
 					onPress={() => {
-						router?.navigate("/login")
+						router?.navigate("/")
 					}}
 				>
 					<Text style={styles.loginButtonText}>Login</Text>
