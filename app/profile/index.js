@@ -67,24 +67,23 @@ export default function Page() {
 							<Text style={styles.userNameText}>
 								{user?.nickName}
 							</Text>
+							<Text style={styles.emailText}>{user?.email}</Text>
 						</View>
 					</View>
-					<View style={styles.myJournalContainer}>
-						<View style={styles.myJournalTextContainer}>
-							<Text
-								style={styles.myJournalText}
-								numberOfLines={2}
-							>
-								Go to My Journal
-							</Text>
-						</View>
-						<TouchableOpacity style={styles.myJournalNextButton}>
-							<AntDesign
-								name="arrowright"
-								size={40}
-								color="white"
-							/>
-						</TouchableOpacity>
+					<Text style={styles.fullNameText}>{user?.fullName}</Text>
+					{fontsLoaded && (
+						<Text style={styles.feelingsTitleText}>Feelings</Text>
+					)}
+					<View style={styles.feelingsWrapper}>
+						{user?.feeling?.map((item, key) => {
+							return (
+								<View style={styles.feelingsPill} key={key}>
+									<Text style={styles.feelingsText}>
+										{item}
+									</Text>
+								</View>
+							)
+						})}
 					</View>
 					<TouchableOpacity
 						style={styles.deleteAccountButton}
@@ -149,34 +148,36 @@ const styles = StyleSheet.create({
 		fontSize: 50,
 		fontWeight: "300"
 	},
-	myJournalContainer: {
-		height: 85,
-		width: "100%",
-		borderRadius: 32.5,
-		backgroundColor: "#1A4586",
+	emailText: {
+		fontSize: 15,
+		fontWeight: "300"
+	},
+	fullNameText: {
+		fontSize: 50,
+		fontWeight: "300"
+	},
+	feelingsTitleText: {
+		fontSize: 25,
+		fontFamily: "Raleway-Black"
+	},
+	feelingsWrapper: {
 		flexDirection: "row",
-		alignItems: "center"
+		gap: 10,
+		flexWrap: "wrap"
 	},
-	myJournalTextContainer: {
-		flex: 1,
-		paddingLeft: 25,
-		paddingRight: 50
-	},
-	myJournalText: {
-		fontSize: 27.5,
-		color: "white",
-		fontWeight: "400"
-	},
-	myJournalNextButton: {
-		height: "100%",
-		width: 100,
-		borderRadius: 32.5,
-		backgroundColor: "#4482E0",
-		alignItems: "center",
+	feelingsPill: {
+		height: 25,
+		paddingHorizontal: 5,
+		borderRadius: 15,
+		backgroundColor: "#8FC9FF",
 		justifyContent: "center"
 	},
+	feelingsText: {
+		color: "white",
+		fontWeight: "500"
+	},
 	deleteAccountButton: {
-		marginTop: 150,
+		marginTop: 25,
 		alignSelf: "center"
 	},
 	deleteAccountButtonText: {
