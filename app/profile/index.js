@@ -9,7 +9,6 @@ import {
 } from "react-native"
 import { useFonts } from "expo-font"
 import axios from "axios"
-import AntDesign from "@expo/vector-icons/AntDesign"
 import { AppContext } from "../../context/context"
 import BottomNav from "../../components/bottom-nav/BottomNav"
 import DeleteAccountPopup from "../../components/delete-account-popup/DeleteAccountPopup"
