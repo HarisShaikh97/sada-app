@@ -1,7 +1,42 @@
+import { useContext } from "react"
 import { View, Text, Modal, TouchableOpacity, StyleSheet } from "react-native"
+import { useRouter } from "expo-router"
+import axios from "axios"
+import Toast from "react-native-root-toast"
 import PropTypes from "prop-types"
+import { AppContext } from "../../context/context"
 
 export default function DeleteAccountPopup({ showPopup, setShowPopup }) {
+	const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL
+
+	const router = useRouter()
+
+	const { state, dispatch } = useContext(AppContext)
+
+	const handleDeleteAccount = async () => {
+		await axios
+			.delete(
+				`${API_BASE_URL}/api/user?accessToken=${state?.accessToken}`
+			)
+			?.then((res) => {
+				console.log(res)
+				Toast.show(res?.data?.Message, {
+					duration: 1500
+				})
+				dispatch({
+					type: "SET_ACCESS_TOKEN",
+					payload: null
+				})
+				router?.navigate("/")
+			})
+			?.catch((err) => {
+				console.log(err)
+				Toast.show(err?.response?.data?.Message || "Error!", {
+					duration: 1500
+				})
+			})
+	}
+
 	return (
 		<Modal
 			animationType="fade"
@@ -22,11 +57,7 @@ export default function DeleteAccountPopup({ showPopup, setShowPopup }) {
 						</Text>
 					</View>
 					<View style={styles.buttonsContainer}>
-						<TouchableOpacity
-							onPress={() => {
-								setShowPopup(false)
-							}}
-						>
+						<TouchableOpacity onPress={handleDeleteAccount}>
 							<Text style={styles.buttonText}>Yes</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
