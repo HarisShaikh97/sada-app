@@ -40,7 +40,7 @@ export default function Page() {
 					type: "SET_SIGNUP_USER",
 					payload: null
 				})
-				router?.navigate("/login")
+				router?.navigate("/")
 			})
 			?.catch((err) => {
 				console.log(err)
