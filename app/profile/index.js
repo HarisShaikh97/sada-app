@@ -12,11 +12,12 @@ import axios from "axios"
 import { AppContext } from "../../context/context"
 import BottomNav from "../../components/bottom-nav/BottomNav"
 import DeleteAccountPopup from "../../components/delete-account-popup/DeleteAccountPopup"
+import { router } from "expo-router"
 
 export default function Page() {
 	const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL
 
-	const { state } = useContext(AppContext)
+	const { state, dispatch } = useContext(AppContext)
 
 	const [fontsLoaded] = useFonts({
 		"Raleway-Black": require("../../assets/fonts/raleway-5/Raleway-Regular.ttf")
@@ -90,9 +91,21 @@ export default function Page() {
 							setShowPopup(true)
 						}}
 					>
-						<Text style={styles.deleteAccountButtonText}>
+						<Text style={styles.buttonText}>
 							Delete your account
 						</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={styles.logoutButton}
+						onPress={() => {
+							dispatch({
+								type: "SET_ACCESS_TOKEN",
+								payload: null
+							})
+							router?.replace("/")
+						}}
+					>
+						<Text style={styles.buttonText}>Logout</Text>
 					</TouchableOpacity>
 				</View>
 			</ScrollView>
@@ -179,7 +192,10 @@ const styles = StyleSheet.create({
 		marginTop: 25,
 		alignSelf: "center"
 	},
-	deleteAccountButtonText: {
+	logoutButton: {
+		alignSelf: "center"
+	},
+	buttonText: {
 		fontSize: 20,
 		fontWeight: "500",
 		color: "#D36A6A"
