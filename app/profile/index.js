@@ -10,6 +10,7 @@ import {
 import { useFonts } from "expo-font"
 import axios from "axios"
 import { AppContext } from "../../context/context"
+import { getAccessToken, deleteAccessToken } from "../../utils/helpers"
 import BottomNav from "../../components/bottom-nav/BottomNav"
 import DeleteAccountPopup from "../../components/delete-account-popup/DeleteAccountPopup"
 import { router } from "expo-router"
@@ -25,22 +26,32 @@ export default function Page() {
 
 	const [showPopup, setShowPopup] = useState(false)
 	const [user, setUser] = useState()
+	const [accessToken, setAccessToken] = useState("")
 
 	useEffect(() => {
 		;(async () => {
-			await axios
-				.get(
-					`${API_BASE_URL}/api/user?accessToken=${state?.accessToken}`
-				)
-				?.then((res) => {
-					console.log(res)
-					setUser(res?.data?.data)
-				})
-				?.catch((err) => {
-					console.log(err)
-				})
+			if (accessToken?.length > 0) {
+				await axios
+					.get(`${API_BASE_URL}/api/user?accessToken=${accessToken}`)
+					?.then((res) => {
+						console.log(res)
+						setUser(res?.data?.data)
+					})
+					?.catch((err) => {
+						console.log(err)
+					})
+			} else {
+				await getAccessToken()
+					?.then((res) => {
+						console.log(res)
+						setAccessToken(res)
+					})
+					?.catch((err) => {
+						console.log(err)
+					})
+			}
 		})()
-	}, [])
+	}, [accessToken])
 
 	return (
 		<View style={styles.container}>
@@ -97,11 +108,8 @@ export default function Page() {
 					</TouchableOpacity>
 					<TouchableOpacity
 						style={styles.logoutButton}
-						onPress={() => {
-							dispatch({
-								type: "SET_ACCESS_TOKEN",
-								payload: null
-							})
+						onPress={async () => {
+							await deleteAccessToken()
 							router?.replace("/")
 						}}
 					>

@@ -37,7 +37,7 @@ export default function Page() {
 							<Text style={styles.titleText}>Community</Text>
 						)}
 						<View style={styles.locationContainer}>
-							<Text style={styles.locationText}>LUMS</Text>
+							{/* <Text style={styles.locationText}>LUMS</Text> */}
 							<SimpleLineIcons
 								name="location-pin"
 								size={15}

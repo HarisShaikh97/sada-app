@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect } from "react"
 import {
 	View,
 	Text,
@@ -9,14 +9,12 @@ import {
 } from "react-native"
 import { useFonts } from "expo-font"
 import axios from "axios"
-import { AppContext } from "../../context/context"
+import { getAccessToken } from "../../utils/helpers"
 import BottomNav from "../../components/bottom-nav/BottomNav"
 import TherapistEmergencyPopup from "../../components/therapist-emergency-popup/TherapistEmergencyPopup"
 
 export default function Page() {
 	const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL
-
-	const { state } = useContext(AppContext)
 
 	const [fontsLoaded] = useFonts({
 		"Raleway-Black": require("../../assets/fonts/raleway-5/Raleway-Regular.ttf")
@@ -25,33 +23,45 @@ export default function Page() {
 	const [showPopup, setShowPopup] = useState(false)
 	const [therapist, setTherapist] = useState()
 	const [meetings, setMeetings] = useState([])
+	const [accessToken, setAccessToken] = useState("")
 
 	useEffect(() => {
 		;(async () => {
-			await axios
-				.get(
-					`${API_BASE_URL}/api/therapist?accessToken=${state?.accessToken}`
-				)
-				?.then((res) => {
-					console.log(res)
-					setTherapist(res?.data?.therapists[0])
-				})
-				?.catch((err) => {
-					console.log(err)
-				})
-			await axios
-				.get(
-					`${API_BASE_URL}/api/meeting?accessToken=${state?.accessToken}`
-				)
-				?.then((res) => {
-					console.log(res)
-					setMeetings(res?.data?.meetings)
-				})
-				?.catch((err) => {
-					console.log(err)
-				})
+			if (accessToken?.length > 0) {
+				await axios
+					.get(
+						`${API_BASE_URL}/api/therapist?accessToken=${accessToken}`
+					)
+					?.then((res) => {
+						console.log(res)
+						setTherapist(res?.data?.therapists[0])
+					})
+					?.catch((err) => {
+						console.log(err)
+					})
+				await axios
+					.get(
+						`${API_BASE_URL}/api/meeting?accessToken=${accessToken}`
+					)
+					?.then((res) => {
+						console.log(res)
+						setMeetings(res?.data?.meetings)
+					})
+					?.catch((err) => {
+						console.log(err)
+					})
+			} else {
+				await getAccessToken()
+					?.then((res) => {
+						console.log(res)
+						setAccessToken(res)
+					})
+					?.catch((err) => {
+						console.log(err)
+					})
+			}
 		})()
-	}, [])
+	}, [accessToken])
 
 	return (
 		<View style={styles.container}>

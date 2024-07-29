@@ -1,10 +1,10 @@
-import { useState, useContext } from "react"
+import { useState, useEffect } from "react"
 import { View, ScrollView, Text, StyleSheet } from "react-native"
 import { useRouter } from "expo-router"
 import { useFonts } from "expo-font"
 import axios from "axios"
 import Toast from "react-native-root-toast"
-import { AppContext } from "../../context/context"
+import { getAccessToken } from "../../utils/helpers"
 import LogoCircle from "../../components/logo-circle/LogoCircle"
 import NextButton from "../../components/next-button/NextButton"
 import FeelingCard from "../../components/feeling-card/FeelingCard"
@@ -17,23 +17,22 @@ export default function Page() {
 		"Raleway-Black": require("../../assets/fonts/raleway-5/Raleway-Regular.ttf")
 	})
 
-	const { state } = useContext(AppContext)
-
 	const router = useRouter()
 
 	const options = ["depression", "anxiety", "ASD", "ADHD"]
 
 	const [selectedOptions, setSelectedOptions] = useState([])
 	const [optionInput, setOptionInput] = useState("")
+	const [accessToken, setAccessToken] = useState("")
 
 	const handleNext = async () => {
-		if (optionInput?.length > 0) {
+		if (optionInput?.length > 0 && accessToken?.length > 0) {
 			const payload = {
 				feeling: [...selectedOptions, optionInput]
 			}
 			await axios
 				.put(
-					`${API_BASE_URL}/api/user?accessToken=${state?.accessToken}`,
+					`${API_BASE_URL}/api/user?accessToken=${accessToken}`,
 					payload
 				)
 				?.then((res) => {
@@ -49,13 +48,13 @@ export default function Page() {
 						duration: 1500
 					})
 				})
-		} else if (selectedOptions?.length > 0) {
+		} else if (selectedOptions?.length > 0 && accessToken?.length > 0) {
 			const payload = {
 				feeling: selectedOptions
 			}
 			await axios
 				.put(
-					`${API_BASE_URL}/api/user?accessToken=${state?.accessToken}`,
+					`${API_BASE_URL}/api/user?accessToken=${accessToken}`,
 					payload
 				)
 				?.then((res) => {
@@ -73,6 +72,19 @@ export default function Page() {
 				})
 		}
 	}
+
+	useEffect(() => {
+		;(async () => {
+			await getAccessToken()
+				?.then((res) => {
+					console.log(res)
+					setAccessToken(res)
+				})
+				?.catch((err) => {
+					console.log(err)
+				})
+		})()
+	}, [])
 
 	return (
 		<View style={styles.container}>

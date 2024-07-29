@@ -1,7 +1,7 @@
-import { useEffect, useState, useContext } from "react"
+import { useEffect, useState } from "react"
 import { View, ScrollView, StyleSheet } from "react-native"
 import axios from "axios"
-import { AppContext } from "../../context/context"
+import { getAccessToken } from "../../utils/helpers"
 import BottomNav from "../../components/bottom-nav/BottomNav"
 import UpcomingSessionCard from "../../components/upcoming-session-card/UpcomingSessionCard"
 import SessionsListHeader from "../../components/sessions-list-header/SessionsListHeader"
@@ -10,25 +10,35 @@ import SessionCard from "../../components/session-card/SessionCard"
 export default function Page() {
 	const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL
 
-	const { state } = useContext(AppContext)
-
 	const [meetings, setMeetings] = useState([])
+	const [accessToken, setAccessToken] = useState("")
 
 	useEffect(() => {
 		;(async () => {
-			await axios
-				.get(
-					`${API_BASE_URL}/api/meeting?accessToken=${state?.accessToken}`
-				)
-				?.then((res) => {
-					console.log(res)
-					setMeetings(res?.data?.meetings)
-				})
-				?.catch((err) => {
-					console.log(err)
-				})
+			if (accessToken?.length > 0) {
+				await axios
+					.get(
+						`${API_BASE_URL}/api/meeting?accessToken=${accessToken}`
+					)
+					?.then((res) => {
+						console.log(res)
+						setMeetings(res?.data?.meetings)
+					})
+					?.catch((err) => {
+						console.log(err)
+					})
+			} else {
+				await getAccessToken()
+					?.then((res) => {
+						console.log(res)
+						setAccessToken(res)
+					})
+					?.catch((err) => {
+						console.log(err)
+					})
+			}
 		})()
-	}, [])
+	}, [accessToken])
 
 	return (
 		<View style={styles.container}>

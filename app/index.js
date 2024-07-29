@@ -1,4 +1,4 @@
-import { useState, useContext } from "react"
+import { useState, useEffect } from "react"
 import {
 	View,
 	Text,
@@ -10,13 +10,11 @@ import { useRouter } from "expo-router"
 import { useFonts } from "expo-font"
 import axios from "axios"
 import Toast from "react-native-root-toast"
-import { AppContext } from "../context/context"
+import { setAccessToken, getAccessToken } from "../utils/helpers"
 import LogoCircle from "../components/logo-circle/LogoCircle"
 
 export default function Page() {
 	const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL
-
-	const { dispatch } = useContext(AppContext)
 
 	const [fontsLoaded] = useFonts({
 		"Raleway-Black": require("../assets/fonts/raleway-5/Raleway-Regular.ttf")
@@ -40,10 +38,7 @@ export default function Page() {
 				Toast.show("Login successful!", {
 					duration: 1500
 				})
-				dispatch({
-					type: "SET_ACCESS_TOKEN",
-					payload: res?.data?.accessToken
-				})
+				setAccessToken(res?.data?.accessToken)
 				router?.navigate("/feeling")
 			})
 			?.catch((err) => {
@@ -53,6 +48,21 @@ export default function Page() {
 				})
 			})
 	}
+
+	useEffect(() => {
+		;(async () => {
+			await getAccessToken()
+				?.then((res) => {
+					console.log(res)
+					if (res?.length > 0) {
+						router?.navigate("/home")
+					}
+				})
+				?.catch((err) => {
+					console.log(err)
+				})
+		})()
+	}, [])
 
 	return (
 		<View style={styles.container}>
