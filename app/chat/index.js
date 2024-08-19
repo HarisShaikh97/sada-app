@@ -68,7 +68,17 @@ export default function Page() {
 					</View>
 					<View style={styles.postContainer}>
 						{posts?.map((item, key) => {
-							return <PostCard post={item} key={key} />
+							return (
+								<PostCard
+									post={item}
+									handleDelete={() => {
+										const newArray = [...posts]
+										newArray.splice(key, 1)
+										setPosts(newArray)
+									}}
+									key={key}
+								/>
+							)
 						})}
 					</View>
 				</View>

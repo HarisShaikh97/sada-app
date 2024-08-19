@@ -4,7 +4,7 @@ import AntDesign from "@expo/vector-icons/AntDesign"
 import Feather from "@expo/vector-icons/Feather"
 import PropTypes from "prop-types"
 
-export default function PostCard({ post }) {
+export default function PostCard({ post, handleDelete }) {
 	const [liked, setLiked] = useState(false)
 
 	return (
@@ -33,8 +33,8 @@ export default function PostCard({ post }) {
 					</TouchableOpacity>
 				</View>
 				<View style={styles.postActionsWrapper}>
-					<TouchableOpacity>
-						<Feather name="eye-off" size={17.5} color="gray" />
+					<TouchableOpacity onPress={handleDelete}>
+						<AntDesign name="delete" size={17.5} color="gray" />
 					</TouchableOpacity>
 					<TouchableOpacity>
 						<AntDesign name="ellipsis1" size={17.5} color="gray" />
@@ -80,5 +80,6 @@ const styles = StyleSheet.create({
 })
 
 PostCard.propTypes = {
-	post: PropTypes.string.isRequired
+	post: PropTypes.string.isRequired,
+	handleDelete: PropTypes.func.isRequired
 }

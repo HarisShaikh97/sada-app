@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react"
-import { View, ScrollView, Text, StyleSheet } from "react-native"
+import {
+	View,
+	KeyboardAvoidingView,
+	ScrollView,
+	Text,
+	Platform,
+	StyleSheet
+} from "react-native"
 import { useRouter } from "expo-router"
 import { useFonts } from "expo-font"
 import axios from "axios"
@@ -87,64 +94,71 @@ export default function Page() {
 	}, [])
 
 	return (
-		<View style={styles.container}>
-			<View style={styles.contentWrapper}>
-				<LogoCircle
-					size={100}
-					color="purple"
-					backgroundColor="#EEE5FF"
-				/>
-				<View style={styles.quizWrapper}>
-					<View style={styles.titleWrapper}>
-						{fontsLoaded && (
-							<Text
-								style={styles.titleText}
-								numberOfLines={2}
-								ellipsizeMode="tail"
-							>
-								{selectedOptions?.length > 0 ||
-								optionInput?.length > 0
-									? "Choose the options that apply to you"
-									: "How are you Feeling?"}
-							</Text>
-						)}
-					</View>
-					<ScrollView
-						style={styles?.scrollArea}
-						showsVerticalScrollIndicator={false}
-					>
-						<View style={styles.optionsScrollContainer}>
-							{options?.map((item, key) => {
-								return (
-									<FeelingCard
-										selectedOptions={selectedOptions}
-										setSelectedOptions={setSelectedOptions}
-										feeling={item}
-										key={key}
+		<KeyboardAvoidingView
+			behavior={Platform.OS === "ios" ? "padding" : "height"}
+			style={styles?.layout}
+		>
+			<ScrollView showsVerticalScrollIndicator={false}>
+				<View style={styles.container}>
+					<View style={styles.contentWrapper}>
+						<LogoCircle
+							size={100}
+							color="purple"
+							backgroundColor="#EEE5FF"
+						/>
+						<View style={styles.quizWrapper}>
+							<View style={styles.titleWrapper}>
+								{fontsLoaded && (
+									<Text
+										style={styles.titleText}
+										numberOfLines={3}
+										ellipsizeMode="tail"
+									>
+										{selectedOptions?.length > 0 ||
+										optionInput?.length > 0
+											? "Choose the options that apply to you"
+											: "How are you Feeling?"}
+									</Text>
+								)}
+							</View>
+							<View style={styles.optionsContainer}>
+								{options?.map((item, key) => {
+									return (
+										<FeelingCard
+											selectedOptions={selectedOptions}
+											setSelectedOptions={
+												setSelectedOptions
+											}
+											feeling={item}
+											key={key}
+										/>
+									)
+								})}
+								{fontsLoaded && (
+									<FeelingInput
+										optionInput={optionInput}
+										setOptionInput={setOptionInput}
 									/>
-								)
-							})}
-							{fontsLoaded && (
-								<FeelingInput
-									optionInput={optionInput}
-									setOptionInput={setOptionInput}
-								/>
-							)}
+								)}
+							</View>
 						</View>
-					</ScrollView>
+					</View>
+					<NextButton color="#371B72" handleNext={handleNext} />
 				</View>
-			</View>
-			<NextButton color="#371B72" handleNext={handleNext} />
-		</View>
+			</ScrollView>
+		</KeyboardAvoidingView>
 	)
 }
 
 const styles = StyleSheet.create({
+	layout: {
+		flex: 1,
+		backgroundColor: "#9973E9"
+	},
 	container: {
 		flex: 1,
 		flexDirection: "column",
 		gap: 25,
-		backgroundColor: "#9973E9",
 		paddingHorizontal: 25,
 		paddingBottom: 50
 	},
@@ -169,11 +183,7 @@ const styles = StyleSheet.create({
 		color: "white",
 		fontFamily: "Raleway-Black"
 	},
-	scrollArea: {
-		width: "100%",
-		flex: 1
-	},
-	optionsScrollContainer: {
+	optionsContainer: {
 		width: "100%",
 		flexDirection: "column",
 		gap: 15,

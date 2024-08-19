@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react"
 import {
 	View,
+	KeyboardAvoidingView,
+	ScrollView,
 	Text,
 	TextInput,
 	TouchableOpacity,
+	Platform,
 	StyleSheet
 } from "react-native"
 import { useRouter } from "expo-router"
@@ -53,7 +56,6 @@ export default function Page() {
 		;(async () => {
 			await getAccessToken()
 				?.then((res) => {
-					console.log(res)
 					if (res?.length > 0) {
 						router?.navigate("/home")
 					}
@@ -65,53 +67,72 @@ export default function Page() {
 	}, [])
 
 	return (
-		<View style={styles.container}>
-			<LogoCircle size={100} color="pink" backgroundColor="#FFE8FD" />
-			{fontsLoaded && <Text style={styles.titleText}>Login</Text>}
-			{fontsLoaded && (
-				<TextInput
-					style={styles.textInput}
-					value={email}
-					onChangeText={setEmail}
-					placeholder="example@gmail.com"
-					inputMode="email"
-				/>
-			)}
-			{fontsLoaded && (
-				<TextInput
-					style={styles.textInput}
-					value={password}
-					onChangeText={setPassword}
-					placeholder="********"
-					secureTextEntry
-				/>
-			)}
-			<TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-				{fontsLoaded && (
-					<Text style={styles.loginButtonText}>Login</Text>
-				)}
-			</TouchableOpacity>
-			<View style={styles.signupTextContainer}>
-				<Text style={styles.signupText}>Do not have an account?</Text>
-				<TouchableOpacity
-					onPress={() => {
-						router?.navigate("/signup")
-					}}
-				>
-					<Text style={styles.signupButtonText}>Signup</Text>
-				</TouchableOpacity>
-			</View>
-		</View>
+		<KeyboardAvoidingView
+			behavior={Platform.OS === "ios" ? "padding" : "height"}
+			style={styles.layout}
+		>
+			<ScrollView showsVerticalScrollIndicator={false}>
+				<View style={styles.container}>
+					<LogoCircle
+						size={100}
+						color="pink"
+						backgroundColor="#FFE8FD"
+					/>
+					{fontsLoaded && <Text style={styles.titleText}>Login</Text>}
+					{fontsLoaded && (
+						<TextInput
+							style={styles.textInput}
+							value={email}
+							onChangeText={setEmail}
+							placeholder="example@gmail.com"
+							inputMode="email"
+						/>
+					)}
+					{fontsLoaded && (
+						<TextInput
+							style={styles.textInput}
+							value={password}
+							onChangeText={setPassword}
+							placeholder="********"
+							secureTextEntry
+						/>
+					)}
+					<TouchableOpacity
+						style={styles.loginButton}
+						onPress={handleLogin}
+					>
+						{fontsLoaded && (
+							<Text style={styles.loginButtonText}>Login</Text>
+						)}
+					</TouchableOpacity>
+					<View style={styles.signupTextContainer}>
+						<Text style={styles.signupText}>
+							Do not have an account?
+						</Text>
+						<TouchableOpacity
+							onPress={() => {
+								router?.navigate("/signup")
+							}}
+						>
+							<Text style={styles.signupButtonText}>Signup</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
+			</ScrollView>
+		</KeyboardAvoidingView>
 	)
 }
 
 const styles = StyleSheet.create({
+	layout: {
+		flex: 1,
+		backgroundColor: "#E18CD9"
+	},
 	container: {
 		flex: 1,
 		flexDirection: "column",
 		alignItems: "center",
 		gap: 35,
-		backgroundColor: "#E18CD9",
 		paddingHorizontal: 25,
 		paddingBottom: 50,
 		paddingTop: 75
