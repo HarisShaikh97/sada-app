@@ -175,8 +175,8 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	titleWrapper: {
-		height: 100,
-		width: "100%"
+		width: "100%",
+		marginBottom: 15
 	},
 	titleText: {
 		fontSize: 35,

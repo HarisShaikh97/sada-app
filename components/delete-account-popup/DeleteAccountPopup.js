@@ -1,32 +1,40 @@
-import { useContext } from "react"
+import { useState, useEffect } from "react"
 import { View, Text, Modal, TouchableOpacity, StyleSheet } from "react-native"
 import { useRouter } from "expo-router"
 import axios from "axios"
 import Toast from "react-native-root-toast"
 import PropTypes from "prop-types"
-import { AppContext } from "../../context/context"
+import { getAccessToken, deleteAccessToken } from "../../utils/helpers"
 
 export default function DeleteAccountPopup({ showPopup, setShowPopup }) {
 	const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL
 
 	const router = useRouter()
 
-	const { state, dispatch } = useContext(AppContext)
+	const [accessToken, setAccessToken] = useState("")
+
+	useEffect(() => {
+		;(async () => {
+			await getAccessToken()
+				?.then((res) => {
+					console.log(res)
+					setAccessToken(res)
+				})
+				?.catch((err) => {
+					console.log(err)
+				})
+		})()
+	}, [accessToken])
 
 	const handleDeleteAccount = async () => {
 		await axios
-			.delete(
-				`${API_BASE_URL}/api/user?accessToken=${state?.accessToken}`
-			)
-			?.then((res) => {
+			.delete(`${API_BASE_URL}/api/user?accessToken=${accessToken}`)
+			?.then(async (res) => {
 				console.log(res)
 				Toast.show(res?.data?.Message, {
 					duration: 1500
 				})
-				dispatch({
-					type: "SET_ACCESS_TOKEN",
-					payload: null
-				})
+				await deleteAccessToken()
 				router?.navigate("/")
 			})
 			?.catch((err) => {

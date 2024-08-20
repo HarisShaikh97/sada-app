@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect } from "react"
 import {
 	View,
 	ScrollView,
@@ -9,7 +9,6 @@ import {
 } from "react-native"
 import { useFonts } from "expo-font"
 import axios from "axios"
-import { AppContext } from "../../context/context"
 import { getAccessToken, deleteAccessToken } from "../../utils/helpers"
 import BottomNav from "../../components/bottom-nav/BottomNav"
 import DeleteAccountPopup from "../../components/delete-account-popup/DeleteAccountPopup"
@@ -17,8 +16,6 @@ import { router } from "expo-router"
 
 export default function Page() {
 	const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL
-
-	const { state, dispatch } = useContext(AppContext)
 
 	const [fontsLoaded] = useFonts({
 		"Raleway-Black": require("../../assets/fonts/raleway-5/Raleway-Regular.ttf")
