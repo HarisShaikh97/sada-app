@@ -17,7 +17,6 @@ export default function DeleteAccountPopup({ showPopup, setShowPopup }) {
 		;(async () => {
 			await getAccessToken()
 				?.then((res) => {
-					console.log(res)
 					setAccessToken(res)
 				})
 				?.catch((err) => {

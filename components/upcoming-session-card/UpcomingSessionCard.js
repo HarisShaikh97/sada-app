@@ -1,8 +1,28 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native"
+import {
+	View,
+	Text,
+	Image,
+	TouchableOpacity,
+	Linking,
+	StyleSheet
+} from "react-native"
 import AntDesign from "@expo/vector-icons/AntDesign"
 import PropTypes from "prop-types"
 
 export default function UpcomingSessionCard({ session }) {
+	const handlePress = async () => {
+		try {
+			const supported = await Linking.canOpenURL(session?.meetingUrl)
+			if (supported) {
+				await Linking.openURL(session?.meetingUrl)
+			} else {
+				console.warn(`Cannot open URL`)
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	}
+
 	return (
 		<View style={styles.upcomingSessionCard}>
 			<Text style={styles.upcomingSessionHeading}>Upcoming Session</Text>
@@ -11,7 +31,10 @@ export default function UpcomingSessionCard({ session }) {
 				{session?.therapist?.specialization}
 			</Text>
 			<Text style={styles.upcomingSessionTime}>{session?.time}</Text>
-			<TouchableOpacity style={styles.joinNowButton}>
+			<TouchableOpacity
+				style={styles.joinNowButton}
+				onPress={handlePress}
+			>
 				<Text style={styles.joinNowButtonText}>Join Now</Text>
 				<AntDesign name="play" size={12.5} color="black" />
 			</TouchableOpacity>

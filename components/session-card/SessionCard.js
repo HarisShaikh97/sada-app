@@ -1,10 +1,23 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native"
+import { View, Text, TouchableOpacity, Linking, StyleSheet } from "react-native"
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons"
 import Octicons from "@expo/vector-icons/Octicons"
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6"
 import PropTypes from "prop-types"
 
 export default function SessionCard({ session }) {
+	const handlePress = async () => {
+		try {
+			const supported = await Linking.canOpenURL(session?.meetingUrl)
+			if (supported) {
+				await Linking.openURL(session?.meetingUrl)
+			} else {
+				console.warn(`Cannot open URL`)
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	}
+
 	return (
 		<View style={styles.sessionCard}>
 			<View style={styles.therapistProfileContainer}>
@@ -45,7 +58,10 @@ export default function SessionCard({ session }) {
 						Reschedule
 					</Text>
 				</TouchableOpacity>
-				<TouchableOpacity style={[styles.buttonContainer]}>
+				<TouchableOpacity
+					style={[styles.buttonContainer]}
+					onPress={handlePress}
+				>
 					<Text style={styles.buttonText}>Join Now</Text>
 				</TouchableOpacity>
 			</View>

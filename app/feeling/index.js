@@ -84,7 +84,6 @@ export default function Page() {
 		;(async () => {
 			await getAccessToken()
 				?.then((res) => {
-					console.log(res)
 					setAccessToken(res)
 				})
 				?.catch((err) => {
