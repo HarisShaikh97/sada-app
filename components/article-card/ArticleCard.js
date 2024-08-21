@@ -1,7 +1,20 @@
-import { TouchableOpacity, Text, StyleSheet } from "react-native"
+import { TouchableOpacity, Text, Linking, StyleSheet } from "react-native"
 import PropTypes from "prop-types"
 
 export default function ArticleCard({ article, currentColor }) {
+	const handlePress = async () => {
+		try {
+			const supported = await Linking.canOpenURL(article?.url)
+			if (supported) {
+				await Linking.openURL(article?.url)
+			} else {
+				console.warn(`Cannot open URL`)
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	}
+
 	return (
 		<TouchableOpacity
 			style={[
@@ -10,6 +23,7 @@ export default function ArticleCard({ article, currentColor }) {
 					backgroundColor: currentColor?.backgroundColor
 				}
 			]}
+			onPress={handlePress}
 		>
 			<Text style={styles.articleTitle} numberOfLines={2}>
 				{article?.title}

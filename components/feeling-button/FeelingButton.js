@@ -21,7 +21,6 @@ export default function FeelingButton() {
 const styles = StyleSheet.create({
 	feelingButton: {
 		height: 30,
-		width: 165,
 		borderWidth: 1,
 		borderRadius: 6.5,
 		borderColor: "lightgray",
@@ -31,7 +30,8 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		gap: 5,
 		alignItems: "center",
-		justifyContent: "center"
+		justifyContent: "center",
+		paddingHorizontal: 10
 	},
 	feelingButtonText: {
 		fontSize: 12,
